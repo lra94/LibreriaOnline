@@ -174,7 +174,7 @@
 
             var usuarioSeleccionado = $(this).closest("tr");
             var data = tabladata.row(usuarioSeleccionado).data();
-
+           
             swal({
                 title: "Estas Seguro?",
                 text: "Eliminar el usuario " + data.Nombre,
@@ -185,6 +185,7 @@
                 cancelButtonText: "No",
                 closeOnConfirm: true
             },
+                
               function () {
 
                jQuery.ajax({
@@ -195,11 +196,13 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
 
-                  //  debugger;
+                   // debugger;
 
                     //Eliminar Usuario
                     if (data.resultado) {
+                        swal("Completado", "Usuario eliminado", "success");
                         tabladata.row(usuarioSeleccionado).remove().draw();
+                        
                     } else {
                         swal("No se pudo eliminar", data.mensaje, "error");
                     }
@@ -246,6 +249,7 @@
                             Usuario.IdUsuario = data.resultado;
                             tabladata.row.add(Usuario).draw(false);
                             $("#FormModal").modal("hide");
+                            swal("Completado", "Usuario creado!", "success");
                         } else {
                             $("#FormModal").modal("show");
                             $("#mensajeError").text(data.mensaje);
@@ -259,6 +263,7 @@
                             tabladata.row(filaSeleccionada).data(Usuario).draw(false);
                             filaSeleccionada = null;
                             $("#FormModal").modal("hide");
+                            swal("Completado", "Usuario editado!", "success");
                         } else {
                             $("#FormModal").modal("show");
                             $("#mensajeError").text(data.mensaje);
