@@ -134,8 +134,6 @@
                 },
 
             ]
-
-
         });
 
         function abrirModal(json) {
@@ -147,7 +145,6 @@
             $("#cboactivo").val(1);
 
             $("#mensajeError").hide();
-
 
             if (json != null) {
 
@@ -165,7 +162,6 @@
 
             filaSeleccionada = $(this).closest("tr");
             var data = tabladata.row(filaSeleccionada).data();
-
             abrirModal(data);
 
         })
@@ -214,11 +210,9 @@
                     
                 }
             });
-
                 });
 
             console.log(data);
-
         })
 
         function Guardar() {
@@ -285,9 +279,7 @@
                 }
             });
 
-
             $("#FormModal").modal("hide");
-
         }
 
     </script>

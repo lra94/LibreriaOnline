@@ -4,5 +4,264 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Genero</h2>
+
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="index.html">Mantenimiento</a></li>
+    <li class="breadcrumb-item active">Generos Literarios</li>
+</ol>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-users me-1"></i>Lista de Generos Literarios
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-success" onclick="abrirModal(null)">Crear Genero Literario</button>
+            </div>
+        </div>
+
+        <hr />
+
+        <table id="tabla" class="display cell-border" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Descripcion</th>
+                    <th>Activo</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Nuevo Genero</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <input id="txtid" type="text" value="0" />
+
+                <div class="row g-1">
+                    <div class="col-sm-6">
+                        <label for="txtdescripcion" class="form-label">Descripcion</label>
+                        <input type="text" class="form-control" id="txtdescripcion" placeholder="Poesia" autocomplete="off" required>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="cboactivo" class="form-label">Activo</label>
+                        <select id="cboactivo" class="form-select">
+                            <option value="1">Si</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+
+                </div>
+                <!--Mensaje de alerta-->
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeError" class="alert alert-danger" role="alert">
+                            A simple danger alert—check it out!
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        var tabladata;
+        var filaSeleccionada;
+
+        tabladata = $("#tabla").DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+            },
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                url: '@Url.Action("ListarGeneros", "Mantenedor")',
+                type: "GET",
+                dataType: "Json"
+            },
+            "columns": [
+                { "data": "Descripcion" },
+                {
+                    "data": "Activo", "render": function (valor) {
+                        if (valor) {
+                            return '<span class="badge bg-success">Si</span>'
+                        } else {
+                            return '<span class="badge bg-danger">No</span>'
+                        }
+                    }
+                },
+                {
+                    "defaultContent": '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
+                                       '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "90px"
+                },
+
+            ]
+        });
+
+        function abrirModal(json) {
+
+            $("#txtid").val(0);
+            $("#txtdescripcion").val("");
+            $("#cboactivo").val(1);
+
+            $("#mensajeError").hide();
+
+            if (json != null) {
+
+                $("#txtid").val(json.IdGenero);
+                $("#txtdescripcion").val(json.Descripcion);
+                $("#cboactivo").val(json.Activo == true ? 1 : 0);
+            }
+
+            $("#FormModal").modal("show");
+        }
+
+        $("#tabla tbody").on("click", '.btn-editar', function () {
+
+            filaSeleccionada = $(this).closest("tr");
+            var data = tabladata.row(filaSeleccionada).data();
+            abrirModal(data);
+
+        })
+
+        $("#tabla tbody").on("click", '.btn-eliminar', function () {
+
+            var generoSeleccionado = $(this).closest("tr");
+            var data = tabladata.row(generoSeleccionado).data();
+
+            swal({
+                title: "Estas Seguro?",
+                text: "Eliminar el Genero " + data.Descripcion,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+            },
+
+              function () {
+               jQuery.ajax({
+                url: '@Url.Action("EliminarGenero", "Mantenedor")',
+                   type: "POST",
+                   data: JSON.stringify({ id: data.IdGenero }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                   // debugger;
+
+                    //Eliminar Genero
+                    if (data.resultado) {
+                        swal("Completado", "Genero eliminado", "success");
+                        tabladata.row(generoSeleccionado).remove().draw();
+
+                    } else {
+                        swal("No se pudo eliminar", data.mensaje, "error");
+                    }
+                },
+                   error: function (error) {
+                       console.log(error);
+                },
+                beforeSend: function () {
+
+                }
+            });
+                });
+
+            console.log(data);
+        })
+
+        function Guardar() {
+
+            var Genero = {
+                IdGenero: $("#txtid").val(),
+                Descripcion: $("#txtdescripcion").val(),
+                Activo: $("#cboactivo").val() == 1? true: false
+            }
+
+            jQuery.ajax({
+                url: '@Url.Action("GuardarGenero", "Mantenedor")',
+                type: "POST",
+                data: JSON.stringify({ objeto: Genero }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                    $(".modal-body").LoadingOverlay("hide");
+                  //  debugger;
+
+                    //Nuevo Genero
+                    if (Genero.IdGenero == 0) {
+
+                        if (data.resultado != 0) {
+                            Genero.IdGenero = data.resultado;
+                            tabladata.row.add(Genero).draw(false);
+                            $("#FormModal").modal("hide");
+                            swal("Completado", "Genero creado!", "success");
+                        } else {
+                            $("#FormModal").modal("show");
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+
+                        //Editar Genero
+                    } else {
+
+                        if (data.resultado) {
+                            tabladata.row(filaSeleccionada).data(Genero).draw(false);
+                            filaSeleccionada = null;
+                            $("#FormModal").modal("hide");
+                            swal("Completado", "Usuario editado!", "success");
+                        } else {
+                            $("#FormModal").modal("show");
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                },
+                error: function (error) {
+                    $(".modal-body").LoadingOverlay("hide");
+                    $("#mensajeError").text("Error Ajax");
+                    $("#mensajeError").show();
+                },
+                beforeSend: function () {
+                    $(".modal-body").LoadingOverlay("show", {
+                        imageResizeFactor: 2,
+                        text: "Cargando...",
+                        size: 14
+                    });
+                }
+            });
+
+            $("#FormModal").modal("hide");
+        }
+
+    </script>
+}
 
