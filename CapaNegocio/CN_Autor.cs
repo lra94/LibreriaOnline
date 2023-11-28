@@ -9,28 +9,32 @@ using CapaEntidad;
 
 namespace CapaNegocio
 {
-    public class CN_Genero
+    public class CN_Autor
     {
-        private CD_Genero objCapaDato = new CD_Genero();
+        private CD_Autor objCapaDato = new CD_Autor();
 
-        public List<Genero> Listar()
+        public List<Autor> Listar()
         {
             return objCapaDato.Listar();
         }
 
-        //Metodo Registrar Generos
-        public int Registrar(Genero obj, out string Mensaje)
+        //Metodo Registrar Autor
+        public int Registrar(Autor obj, out string Mensaje)
         {
             Mensaje = string.Empty;
 
             if (string.IsNullOrEmpty(obj.Descripcion) || string.IsNullOrWhiteSpace(obj.Descripcion))
             {
-                Mensaje = "La descripcion del Genero no puede estar vacio!";
-            }
-            
+                Mensaje = "El Nombre del Autor no puede estar vacio!";
+            }            
+            else if (obj.oPais.IdPais == 0)
+            {
+                Mensaje = "Debe seleccionar un Pais!";
+            }         
+
             if (string.IsNullOrEmpty(Mensaje))
             {
-               return objCapaDato.Registrar(obj, out Mensaje);
+                return objCapaDato.Registrar(obj, out Mensaje);
             }
             else
             {
@@ -38,14 +42,18 @@ namespace CapaNegocio
             }
         }
 
-        //Editar Genero
-        public bool Editar(Genero obj, out string Mensaje)
+        //Editar Autor
+        public bool Editar(Autor obj, out string Mensaje)
         {
             Mensaje = string.Empty;
 
             if (string.IsNullOrEmpty(obj.Descripcion) || string.IsNullOrWhiteSpace(obj.Descripcion))
             {
-                Mensaje = "La descripcion del Genero no puede estar vacio!";
+                Mensaje = "El Nombre del Autor no puede estar vacio!";
+            }
+            else if (obj.oPais.IdPais == 0)
+            {
+                Mensaje = "Debe seleccionar un Pais!";
             }
 
             if (string.IsNullOrEmpty(Mensaje))
@@ -58,7 +66,7 @@ namespace CapaNegocio
             }
         }
 
-        //Eliminar Genero
+        //Eliminar Autor
         public bool Eliminar(int id, out string Mensaje)
         {
             return objCapaDato.Eliminar(id, out Mensaje);

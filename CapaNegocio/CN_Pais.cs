@@ -4,33 +4,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 using CapaDatos;
 using CapaEntidad;
 
 namespace CapaNegocio
 {
-    public class CN_Genero
+    public class CN_Pais
     {
-        private CD_Genero objCapaDato = new CD_Genero();
+        private CD_Pais objCapaDato = new CD_Pais();
 
-        public List<Genero> Listar()
+        public List<Pais> Listar()
         {
             return objCapaDato.Listar();
         }
 
-        //Metodo Registrar Generos
-        public int Registrar(Genero obj, out string Mensaje)
+        //Metodo Registrar Pais
+        public int Registrar(Pais obj, out string Mensaje)
         {
             Mensaje = string.Empty;
 
             if (string.IsNullOrEmpty(obj.Descripcion) || string.IsNullOrWhiteSpace(obj.Descripcion))
             {
-                Mensaje = "La descripcion del Genero no puede estar vacio!";
+                Mensaje = "La descripcion del Pais no puede estar vacio!";
             }
-            
+            if (string.IsNullOrEmpty(obj.CodigoIso) || string.IsNullOrWhiteSpace(obj.CodigoIso))
+            {
+                Mensaje = "El Codigo Iso del Pais no puede estar vacio!";
+            }
+
             if (string.IsNullOrEmpty(Mensaje))
             {
-               return objCapaDato.Registrar(obj, out Mensaje);
+                return objCapaDato.Registrar(obj, out Mensaje);
             }
             else
             {
@@ -38,14 +43,18 @@ namespace CapaNegocio
             }
         }
 
-        //Editar Genero
-        public bool Editar(Genero obj, out string Mensaje)
+        //Editar Pais
+        public bool Editar(Pais obj, out string Mensaje)
         {
             Mensaje = string.Empty;
 
             if (string.IsNullOrEmpty(obj.Descripcion) || string.IsNullOrWhiteSpace(obj.Descripcion))
             {
-                Mensaje = "La descripcion del Genero no puede estar vacio!";
+                Mensaje = "La Descripcion del Pais no puede estar vacio!";
+            }
+            if (string.IsNullOrEmpty(obj.CodigoIso) || string.IsNullOrWhiteSpace(obj.CodigoIso))
+            {
+                Mensaje = "El Codigo Iso del Pais no puede estar vacio!";
             }
 
             if (string.IsNullOrEmpty(Mensaje))
@@ -58,7 +67,7 @@ namespace CapaNegocio
             }
         }
 
-        //Eliminar Genero
+        //Eliminar Pais
         public bool Eliminar(int id, out string Mensaje)
         {
             return objCapaDato.Eliminar(id, out Mensaje);

@@ -42,7 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CD_Autor.cs" />
     <Compile Include="CD_Genero.cs" />
+    <Compile Include="CD_Pais.cs" />
+    <Compile Include="CD_Producto.cs" />
     <Compile Include="CD_Usuarios.cs" />
     <Compile Include="Conexion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
