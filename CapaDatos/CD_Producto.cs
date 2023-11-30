@@ -23,8 +23,8 @@ namespace CapaDatos
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine("select p.IdProducto, p.Titulo, p.Descripcion, ");
-                    sb.AppendLine("a.IdAutor, a.Descripcion[Autor],");
-                    sb.AppendLine(" g.IdGenero, g.Descripcion[Genero],");
+                    sb.AppendLine("a.IdAutor, a.Descripcion as Autor,");
+                    sb.AppendLine(" g.IdGenero, g.Descripcion as Genero,");
                     sb.AppendLine(" p.Precio, p.Stock, p.RutaImagen, p.NombreImagen, p.Activo from Producto p");
                     sb.AppendLine("inner join Autor a on a.IdAutor = p.AutorId");
                     sb.AppendLine("inner join Genero g on g.IdGenero = p.GeneroId");       
@@ -109,7 +109,7 @@ namespace CapaDatos
             {
                 using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
                 {
-                    SqlCommand cmd = new SqlCommand("sp_EdidarProducto", oconexion);
+                    SqlCommand cmd = new SqlCommand("sp_EditarProducto", oconexion);
                     cmd.Parameters.AddWithValue("IdProducto", obj.IdProducto);
                     cmd.Parameters.AddWithValue("Titulo", obj.Titulo);
                     cmd.Parameters.AddWithValue("Descripcion", obj.Descripcion);

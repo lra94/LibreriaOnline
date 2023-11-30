@@ -96,7 +96,7 @@ namespace CapaDatos
             {
                 using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
                 {
-                    SqlCommand cmd = new SqlCommand("sp_EdidarAutor", oconexion);
+                    SqlCommand cmd = new SqlCommand("sp_EditarAutor", oconexion);
                     cmd.Parameters.AddWithValue("IdAutor", obj.IdAutor);
                     cmd.Parameters.AddWithValue("Descripcion", obj.Descripcion);
                     cmd.Parameters.AddWithValue("PaisId", obj.oPais.IdPais);
