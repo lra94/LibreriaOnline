@@ -44,6 +44,7 @@
     <Compile Include="Autor.cs" />
     <Compile Include="Carrito.cs" />
     <Compile Include="Cliente.cs" />
+    <Compile Include="Dashboard.cs" />
     <Compile Include="DetalleVenta.cs" />
     <Compile Include="Genero.cs" />
     <Compile Include="Pais.cs" />
