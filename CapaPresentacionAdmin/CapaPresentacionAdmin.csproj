@@ -194,6 +194,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccesoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MantenedorController.cs" />
     <Compile Include="Controllers\XLWorkBook.cs" />
@@ -573,6 +574,9 @@
     <Content Include="Views\Mantenedor\Pais.cshtml" />
     <Content Include="Views\Mantenedor\Autor.cshtml" />
     <Content Include="Views\Mantenedor\Producto.cshtml" />
+    <Content Include="Views\Acceso\Index.cshtml" />
+    <Content Include="Views\Acceso\CambiarClave.cshtml" />
+    <Content Include="Views\Acceso\Reestablecer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

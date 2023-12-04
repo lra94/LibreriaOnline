@@ -58,7 +58,7 @@ namespace CapaNegocio
             {
                 string clave = CN_Recursos.GenerarClaveAleatoria(); //GenerarClaveAleatoria();
                 string asunto = "Libreria Online - Registro de cuenta";
-                string mensaje_correo = $"<h3>Su cuenta fue creada correctamente</h3></br><p>Su clave temporal es:{clave}</p>";
+                string mensaje_correo = $"<h3>Su cuenta fue creada correctamente</h3></br><p>Su clave temporal es: {clave}</p>";
 
                 bool respuesta = CN_Recursos.EnviarCorreo(obj.Correo, asunto, mensaje_correo);
 
@@ -113,7 +113,42 @@ namespace CapaNegocio
             return objCapaDato.Eliminar(id, out Mensaje);
         }
 
+        //Cambiar Clave de usuario
+        public bool CambiarClave(int idusuario, string nuevaclave, out string Mensaje)
+        {
+            return objCapaDato.CambiarClave(idusuario, nuevaclave, out Mensaje);
+        }
 
+        //Reestablecer Clave de usuario
+        public bool ReestablecerClave(int idusuario, string correo, out string Mensaje)
+        {
+            Mensaje = string.Empty;
+            string nuevaclave = CN_Recursos.GenerarClaveAleatoria();
+            bool resultado = objCapaDato.ReestablecerClave(idusuario, CN_Recursos.ConvertirShat256(nuevaclave), out Mensaje);
+
+            if (resultado)
+            {
+                string asunto = "Libreria Online - Reestablecer clave";
+                string mensaje_correo = $"<h3>Su cuenta fue reestablecida correctamente</h3></br><p>Su nueva clave temporal es: {nuevaclave}</p>";
+                bool respuesta = CN_Recursos.EnviarCorreo(correo, asunto, mensaje_correo);
+
+                if (respuesta)
+                {
+                    return true;
+                }
+                else
+                {
+                    Mensaje = "No se pudo enviar el correo.";
+                    return false;
+                }
+            }
+            else
+            {
+                Mensaje = "No se pudo reestablecer la clave.";
+                return false;
+            }
+
+        }
 
     }
 }
