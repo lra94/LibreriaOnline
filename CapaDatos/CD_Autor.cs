@@ -154,5 +154,49 @@ namespace CapaDatos
             return resultado;
         }
 
+
+
+        public List<Autor> ListarAutorPorGenero(int idgenero)
+        {
+            List<Autor> lista = new List<Autor>();
+
+            try
+            {
+                using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine("select distinct a.IdAutor, a.Descripcion from Producto p");
+                    sb.AppendLine("inner join Genero g on g.IdGenero = p.GeneroId");
+                    sb.AppendLine("inner join Autor a on a.IdAutor = p.AutorId and a.Activo = 1");
+                    sb.AppendLine("where g.IdGenero = iif(@idgenero = 0, g.IdGenero, @idgenero)");
+
+                    SqlCommand cmd = new SqlCommand(sb.ToString(), oconexion);
+                    cmd.Parameters.AddWithValue("@idgenero", idgenero);
+                    cmd.CommandType = CommandType.Text;
+                    oconexion.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            lista.Add(
+                                    new Autor()
+                                    {
+                                        IdAutor = Convert.ToInt32(dr["IdAutor"]),
+                                        Descripcion = dr["Descripcion"].ToString()
+                                    }
+                                );
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                lista = new List<Autor>();
+
+            }
+            return lista;
+        }
+
     }
 }

@@ -71,5 +71,10 @@ namespace CapaNegocio
         {
             return objCapaDato.Eliminar(id, out Mensaje);
         }
+
+        public List<Autor> ListarAutorPorGenero(int idgenero)
+        {
+            return objCapaDato.ListarAutorPorGenero(idgenero);
+        }
     }
 }
