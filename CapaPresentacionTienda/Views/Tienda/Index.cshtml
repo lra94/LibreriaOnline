@@ -7,7 +7,7 @@
 <header class="bg-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Una libreria Moderna y con estilo!</h1>
+            <h1 class="display-4 fw-bolder">Una libreria Moderna con estilo!</h1>
             <p class="lead fw-normal text-white-50 mb-0">Encuentra lo que necesitas</p>
         </div>
     </div>
@@ -124,7 +124,9 @@
     <script>
 
         $(document).ready(function () {
+
             MostrarGeneros();
+            MostrarProductos(0,0);
         })
 
         function MostrarGeneros() {
@@ -156,12 +158,7 @@
                 })
         }
 
-
-
         function MostrarAutor() {
-
-           
-
             var _idgenero = $("input[name=genero]:checked").val()
 
                 jQuery.ajax({
@@ -171,6 +168,7 @@
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
+                        $("#contenedor_autor").html("");
                         $("#contenedor_autor").LoadingOverlay("hide");
 
                         $("<div>").addClass("form-check").append(
@@ -191,6 +189,61 @@
                     }
                 })
         }
+
+        $(document).on("change", "input[name=genero]", function () {
+            MostrarAutor();
+        });
+
+        function MostrarProductos(_idgenero, _idautor) {
+                jQuery.ajax({
+                    url: "@Url.Action("ListarProductos", "Tienda")",
+                    type: "POST",
+                    data: JSON.stringify({ idgenero: _idgenero, idautor: _idautor}),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+
+                        $("#contenedor_producto").html("");
+                        $("#contenedor_producto").LoadingOverlay("hide");
+
+                        $.each(response.data, function (i, element) {
+                            $("<div>").addClass("col mb-5").append(
+                                $("<div>").addClass("card h-100").append(
+                                    $("<img>").addClass("card-img-top").attr({ "src": "data:image/" + element.Extension + ";base64," + element.Base64 }),
+                                    $("<div>").addClass("card-body p-4").append(
+                                        $("<div>").addClass("text-center").append(
+                                            $("<h5>").addClass("fw-bolder").text(element.Titulo),
+                                            "$ " + element.Precio.toFixed(2) + " DOP"
+                                        )
+                                    ),
+                                     $("<div>").addClass("card-footer p-2 pt-0 border-top-0 bg-transparent").append(
+                                            $("<div>").addClass("d-grid gap-2").append(
+                                                 @if (Session["Cliente"] != null)
+                                                {
+                                                   @:$("<button>").addClass("btn btn-success mt-auto agregarcarrito").data("idproducto", element.IdProducto).text("Agregar al carrito"),
+
+                                                }
+                                            $("<a>").addClass("btn btn-dark mt-auto")
+                                                .attr({"href": "@Url.Action("DetalleProducto","Tienda")" + "?idproducto=" + element.IdProducto})
+                                                .text("Ver detalle")
+                                            )
+                                        )
+                                )
+                            ).appendTo("#contenedor_producto");
+                        })
+                    },
+                    beforeSend: function() {
+                        $("#contenedor_producto").LoadingOverlay("show");
+                    }
+                })
+        }
+
+        $("#btnaplicarfiltro").click(function () {
+            var _idgenero = $("input[name=genero]:checked").val();
+            var _idautor = $("input[name=autor]:checked").val();
+
+            MostrarProductos(_idgenero, _idautor);
+        });
 
 
     </script>

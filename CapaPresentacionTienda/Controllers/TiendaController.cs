@@ -17,6 +17,22 @@ namespace CapaPresentacionTienda.Controllers
             return View();
         }
 
+        public ActionResult DetalleProducto(int idproducto = 0)
+        {
+            Producto oProducto = new Producto();
+            bool conversion;
+
+            oProducto = new CN_Producto().Listar().Where(p => p.IdProducto == idproducto).FirstOrDefault();
+
+            if (oProducto != null)
+            {
+                oProducto.Base64 = CN_Recursos.ConvertirBase64(Path.Combine(oProducto.RutaImagen, oProducto.NombreImagen), out conversion);
+                oProducto.Extension = Path.GetExtension(oProducto.NombreImagen);
+            }
+
+            return View(oProducto);
+        }
+
         [HttpGet]
         public JsonResult ListaGeneros()
         {
@@ -63,6 +79,38 @@ namespace CapaPresentacionTienda.Controllers
             jsonresult.MaxJsonLength = int.MaxValue;
 
             return jsonresult;
+        }
+
+
+        [HttpPost]
+        public JsonResult AgregarCarrito(int productoid)
+        {
+            int clienteid = ((Cliente)Session["Cliente"]).IdCliente;
+
+            bool existe = new CN_Carrito().ExisteCarrito(clienteid, productoid);
+
+            bool respuesta = false;
+
+            string mensaje = string.Empty;
+
+            if (existe)
+            {
+                mensaje = "El producto ya existe en el carrito";
+            }
+            else
+            {
+                respuesta = new CN_Carrito().OperacionCarrito(clienteid, productoid,true, out mensaje);
+            }
+
+            return Json(new { respuesta = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult CantidadEnCarrito()
+        {
+            int clienteid = ((Cliente)Session["Cliente"]).IdCliente;
+            int cantidad = new CN_Carrito().CantidadEnCarrito(clienteid);
+            return Json(new { cantidad = cantidad }, JsonRequestBehavior.AllowGet);
         }
 
     }

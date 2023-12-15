@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CD_Autor.cs" />
+    <Compile Include="CD_Carrito.cs" />
     <Compile Include="CD_Cliente.cs" />
     <Compile Include="CD_Dashboard.cs" />
     <Compile Include="CD_Genero.cs" />
