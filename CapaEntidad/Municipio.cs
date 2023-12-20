@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace CapaEntidad
 {
-    public class Sector
+    public class Municipio
     {
-        public string IdSector { get; set; }
+        public string IdMunicipio { get; set; }
         public string Descripcion { get; set; }
-      //  public string MunicipioId { get; set; }
-      //  public string ProvinciaId { get; set; }
+       // public string ProvinciaId { get; set; }
     }
 }

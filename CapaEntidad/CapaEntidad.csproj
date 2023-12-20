@@ -47,6 +47,7 @@
     <Compile Include="Dashboard.cs" />
     <Compile Include="DetalleVenta.cs" />
     <Compile Include="Genero.cs" />
+    <Compile Include="Municipio.cs" />
     <Compile Include="Pais.cs" />
     <Compile Include="Producto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

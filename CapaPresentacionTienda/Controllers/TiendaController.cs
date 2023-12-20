@@ -113,5 +113,90 @@ namespace CapaPresentacionTienda.Controllers
             return Json(new { cantidad = cantidad }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult ListarProductosCarrito()
+        {
+            int clienteid = ((Cliente)Session["Cliente"]).IdCliente;
+
+            List<Carrito> oLista = new List<Carrito>();
+
+            bool conversion;
+
+            oLista = new CN_Carrito().ListarProducto(clienteid).Select(oc => new Carrito()
+            {
+                oProducto = new Producto()
+                {
+                    IdProducto = oc.oProducto.IdProducto,
+                    Titulo = oc.oProducto.Titulo,
+                    oAutor = oc.oProducto.oAutor,
+                    Precio = oc.oProducto.Precio,
+                    RutaImagen = oc.oProducto.RutaImagen,
+                    Base64 = CN_Recursos.ConvertirBase64( Path.Combine( oc.oProducto.RutaImagen, oc.oProducto.NombreImagen), out conversion),
+                    Extension = Path.GetExtension(oc.oProducto.NombreImagen)
+                },
+                Cantidad = oc.Cantidad
+            }).ToList();
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult OperacionCarrito(int productoid, bool sumar)
+        {
+            int clienteid = ((Cliente)Session["Cliente"]).IdCliente;
+
+            bool respuesta = false;
+
+            string mensaje = string.Empty;
+            respuesta = new CN_Carrito().OperacionCarrito(clienteid, productoid, true, out mensaje);
+
+            return Json(new { respuesta = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult EliminarCarrito(int productoid)
+        {
+            int clienteid = ((Cliente)Session["Cliente"]).IdCliente;
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new CN_Carrito().EliminarCarrito(clienteid,productoid);
+            return Json(new { respuesta = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult ObtenerProvincia()
+        {
+            List<Provincia> oLista = new List<Provincia>();
+
+            oLista = new CN_Ubicacion().ObtenerProvincia();
+
+            return Json(new { lista = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult ObtenerMunicipio(string provinciaid)
+        {
+            List<Municipio> oLista = new List<Municipio>();
+
+            oLista = new CN_Ubicacion().ObtenerMunicipio(provinciaid);
+
+            return Json(new { lista = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult ObtenerSector(string provinciaid, string municipioid)
+        {
+            List<Sector> oLista = new List<Sector>();
+
+            oLista = new CN_Ubicacion().ObtenerSector(municipioid, provinciaid);
+
+            return Json(new { lista = oLista }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Carrito()
+        {
+            return View();
+        }
+
     }
 }
