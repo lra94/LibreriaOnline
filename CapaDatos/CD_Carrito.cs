@@ -150,7 +150,7 @@ namespace CapaDatos
             {
                 using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
                 {
-                    SqlCommand cmd = new SqlCommand("spEliminarCarrito", oconexion);
+                    SqlCommand cmd = new SqlCommand("sp_EliminarCarrito", oconexion);
                     cmd.Parameters.AddWithValue("ClienteId", clienteid);
                     cmd.Parameters.AddWithValue("ProductoId", productoid);
                     cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
