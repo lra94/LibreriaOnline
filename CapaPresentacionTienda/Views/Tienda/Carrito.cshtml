@@ -31,7 +31,7 @@
                                                     <span>Nombre Producto</span>
                                                 </div>
                                                 <div class="col-sm-2 align-self-center">
-                                                    <span>Precio: DOP 1600</span>
+                                                    <span>Precio: USD 1600</span>
                                                 </div>
                                                 <div class="col-sm-2 align-self-center">
                                                     <div class="d-flex">
@@ -56,7 +56,7 @@
 
                                 <div class="d-flex justify-content-end">
 
-                                    <label class="align-self-center"><b>Total: DOP <span id="total"></span></b></label>
+                                    <label class="align-self-center"><b>Total: USD <span id="total"></span></b></label>
                                 </div>
 
                             </div>
@@ -137,7 +137,7 @@
                                             $("<span>").text("Titulo: " + item.oProducto.Titulo)
                                         ),
                                         $("<div>").addClass("col-sm-2 align-self-center").append(
-                                            $("<span>").text(item.oProducto.Precio.toFixed(2) + " DOP" )
+                                            $("<span>").text(item.oProducto.Precio.toFixed(2) + " USD" )
                                         ),
 
                                         $("<div>").addClass("col-sm-2 align-self-center").append(
@@ -409,7 +409,10 @@
                     success: function (data) {
                         $.LoadingOverlay("hide");
                         if (data.Status) {
-                            window.location.href = data.Link;
+                            var jsonresult = data.Response;
+                            var links = jsonresult.links;
+                            var resultado = links.find(item => item.rel === "approve");
+                            window.location.href = resultado.href;
                         } else {
                             swal("", "Vuelva a intentarlo mas tarde", "warning");
                         }

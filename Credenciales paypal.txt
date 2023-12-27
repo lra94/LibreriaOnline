@@ -1,0 +1,24 @@
+Client ID:
+AZWz8Blh3oxsBI2rWwwTswKdHbCGb8ZUgIYCNP9mR7I9KFhEw5Vyr-zZuzm1AOidfJH1fEzlFTWNpPOo
+
+Secret key 1
+EIPYIlei1XJApuDdzwr7rlka_BkS_pWzgNKSMvL-rrL52OSWIXn9edsxZgASBX3OdvC9r4L8Bcf-i7Py
+
+
+Tienda
+sb-bdwmw28923617@business.example.com
+Clave
+7AG&t><2
+
+Personal
+sb-v9tju28923993@personal.example.com
+Clave
+Co>PG@D4
+
+
+Card number 4032037165028495
+Expiry date 01/2028
+CVC code    858
+
+https://api-m.sandbox.paypal.com
+https://api-m.sandbox.paypal.com/v2/checkout/orders
