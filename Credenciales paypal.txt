@@ -22,3 +22,7 @@ CVC code    858
 
 https://api-m.sandbox.paypal.com
 https://api-m.sandbox.paypal.com/v2/checkout/orders
+
+
+
+https://localhost:44308/Tienda/Carrito

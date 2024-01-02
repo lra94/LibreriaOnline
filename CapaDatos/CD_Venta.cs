@@ -78,7 +78,7 @@ namespace CapaDatos
                                         oProducto = new Producto()
                                         {
                                             Titulo = dr["Titulo"].ToString(),
-                                            oAutor = new Autor() { Descripcion = dr["DesAutor"].ToString() },
+                                          //  oAutor = new Autor() { Descripcion = dr["DesAutor"].ToString() },
                                             Precio = Convert.ToDecimal(dr["Precio"], new CultureInfo("es-DO")),
                                             RutaImagen = dr["RutaImagen"].ToString(),
                                             NombreImagen = dr["NombreImagen"].ToString()
