@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Libreria Online</title>
+    <title>@ViewBag.Title - Emi Libreria</title>
     @Styles.Render("~/Content/css")
     @*@Scripts.Render("~/bundles/modernizr")*@
 </head>
@@ -19,7 +19,7 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Correo de usuario</a></li>
+                    @*<li><a class="dropdown-item" href="#!">Correo de usuario</a></li>*@
                     <li><hr class="dropdown-divider" /></li>
                     <li><a class="dropdown-item" href="@Url.Action("CerrarSesion","Acceso")">Cerrar sesion</a></li>
                 </ul>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Has hecho login en:</div>
-                    Libreria Online
+                    Emi Libreria
                 </div>
             </nav>
         </div>
@@ -75,7 +75,7 @@
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Emi Libreria 2023</div>
+                        <div class="text-muted">Copyright &copy; Emi Libreria 2024</div>
                         <div>
                             <a href="#">Privacy Policy</a>
                             &middot;
